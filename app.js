@@ -40,4 +40,7 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
+//리스닝 포트 변경 8+각자번화번호 뒤 3자리 
+app.listen( 8000); 
+
 module.exports = app;
