@@ -5,7 +5,7 @@ var router = express.Router();
 var MY_TENANT_ID = 77469;
 var MY_QUEUE = 'TestQueue';
 
-var orch = new Orchestrator('koreatogether', 'admin', '1234Qwer', 'https://platform.uipath.com/koreatogether/koreatogether/')
+var orch = new Orchestrator('koreatogether', 'admin', 'password', 'https://platform.uipath.com/koreatogether/koreatogether/')
 
 
 
