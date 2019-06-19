@@ -119,14 +119,13 @@ class Orchestrator {
 	startJob( process_name, robot_name , payload) {
 		let rel_key = this.getReleaseKey( process_name);
 		let robot_id = this.getRobotId( robot_name)
-
-		payload['startInfo']['ReleaseKey'] = rel_key;
-		payload['startInfo']['RobotIds'].push( robot_id);
+		//payload['startInfo']['ReleaseKey'] = rel_key;
+		//payload['startInfo']['RobotIds'].push( robot_id);
+		console.log( JSON.stringify(payload));
 		let job = this.requestSync( {
 			type: 'POST',
 			extension: 'odata/Jobs/UiPath.Server.Configuration.OData.StartJobs',
-			body: payload
-		});
+			body: JSON.stringify(payload) });
 		return job
 	}
 
@@ -191,11 +190,13 @@ class Orchestrator {
     if( p.hasOwnProperty('ou')) {
       xhttp.setRequestHeader('X-UIPATH-OrganizationUnitId', p["ou"]);
 	}
-	if( p.hasOwnProperty('body'))
-		xhttp.send(p["body"]);
-	else
-		xhttp.send()
+	if( p.hasOwnProperty('body')) {
+		xhttp.send( p["body"]);
+	} else {
+		xhttp.send();
+	}
 
+	 console.log('status : ' + xhttp.status);
     if ( xhttp.status >= 200 && xhttp.status < 300) {
 		try {
 			let resp= JSON.parse(xhttp.responseText);
