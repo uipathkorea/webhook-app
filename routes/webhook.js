@@ -19,15 +19,15 @@ router.post('/', function(req, res, next) {
     if( tenant == MY_TENANT_ID) {
         if( type == 'queueItem.added' && req.body['Queue']['Name'] == MY_QUEUE) {
             //start new job hello world 
-	    console.log('startJob called');
-            let job = orch.startJob( '사용자정보출력', '개발로봇', {
-                                'startInfo': {
-                                    'ReleaseKey' : '534f940d-2e60-4675-a721-e51916c41989',
-                                    'Strategy': 'Specific',
-                                    'RobotIds': [127299],
-                                    'NoOfRobots': 0,
-                                    'JobsCount': 0
-				} });
+            let relKey = orch.getReleaseKey('사용자정보출력');
+            let robotId = orch.getRobotId('개발로봇');
+            console.log('startJob called');
+            let job = orch.startJob( { startInfo: {
+                                    ReleaseKey : `${relKey}`,
+                                    Strategy: 'Specific',
+                                    RobotIds: [ parseInt(`${robotId}`)],
+                                    Source: 'Manual'
+				                } });
 
 	   console.log( job);
         }

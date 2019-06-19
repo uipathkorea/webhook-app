@@ -91,12 +91,14 @@ class Orchestrator {
 	getReleaseKey( name ) {
 		let releases = this.requestSync( {
 				type: 'GET',
-				extension: 'odata/Releases'
+				extension: encodeURI(`odata/Releases?$filter=contains(ProcessKey,'${name}')&$select=Key,ProcessKey`)
 			});
 		var rel_key = undefined;
-		releases['value'].forEach( elm => {
-			if ( elm.ProcessKey == name ) {
+		//console.log(releases);
+		releases['value'].every( (elm,idx) => {
+			if( elm.ProcessKey == name) {
 				rel_key = elm.Key;
+				return false;
 			}
 		});
 		return rel_key;
@@ -105,22 +107,20 @@ class Orchestrator {
 	getRobotId( name) {
 		let robots = this.requestSync( {
 				type: 'GET',
-				extension: 'odata/Robots'
+				extension: encodeURI(`odata/Robots?$filter=contains(Name,'${name}')&$select=Id,Name`)
 			});
 		var robot_id = 0;
-		robots['value'].forEach( elm => {
+		//console.log(robots);
+		robots['value'].every( (elm,idx) => {
 			if( elm.Name == name) {
 				robot_id = elm.Id;
+				return false;
 			}
 		});
 		return robot_id;
 	}
 
-	startJob( process_name, robot_name , payload) {
-		let rel_key = this.getReleaseKey( process_name);
-		let robot_id = this.getRobotId( robot_name)
-		//payload['startInfo']['ReleaseKey'] = rel_key;
-		//payload['startInfo']['RobotIds'].push( robot_id);
+	startJob( payload) {
 		console.log( JSON.stringify(payload));
 		let job = this.requestSync( {
 			type: 'POST',
@@ -204,7 +204,9 @@ class Orchestrator {
 		} catch (e)  {
 			return xhttp.status;
 		}
-    }
+    } else {
+		console.log( xhttp.responseText);
+	}
   }
 
 }
