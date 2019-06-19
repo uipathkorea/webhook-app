@@ -200,7 +200,7 @@ class Orchestrator {
 		try {
 			let resp= JSON.parse(xhttp.responseText);
 			return resp;
-		} catch  {
+		} catch (e)  {
 			return xhttp.status;
 		}
     }
