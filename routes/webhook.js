@@ -15,14 +15,13 @@ var orch = new Orchestrator('koreatogether', 'admin', 'password', 'https://platf
 /*
 특정 Job이 schedule에 의해서 실행된 Job인 경우 해당 Job이 완료된 경우 담당자에게 알려주기 
 */
-router.pos('/', function(req, res, next) {
+router.post('/', function(req, res, next) {
     res.sendStatus(202);
-
     let type = req.body['Type']
     let tenant = req.body['TenantId']
     if( tenant == MY_TENANT_ID) { // 기대하는 Tenant 이고 
         // job이 만들어질때 Schedule인지 파악 
-        if( type == 'job.created' && req.body['StartInfo']['Source'] != 'Manual' && req.body['StartInfo']['Source'] != 'Agent' ) {
+        if( type == 'job.created' && req.body['StartInfo']['Source'] == 'Schedule' ) {
             jobs.add( req.body['EventId'])
         }
         if( jobs.has( req.body['EventId']) && (type == 'job.faulted' || type == 'job.completed')) { // Job이 종료한 경우라면 
@@ -41,11 +40,12 @@ router.pos('/', function(req, res, next) {
                                         Source: 'Manual',
                                         InputArguments: `${JSON.stringify(inputArgs)}`
                                     } });
+                console.log( job)
             }
             jobs.delete( req.body['EventId']);
         }
     }
-}
+});
 
 
 /* POST log webhook request . 
