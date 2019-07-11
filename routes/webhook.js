@@ -5,7 +5,7 @@ var router = express.Router();
 var MY_TENANT_ID = 77469;
 var MY_QUEUE = 'TestQueue';
 var NOTI_PROC_NAME ='작업결과통보';
-var NOTI_ROBOT_NAME ='총무로봇';
+var NOTI_ROBOT_NAME ='UiPathDevBot';
 
 var jobs = new Set();
 //사용할 orchestrator 정보 
