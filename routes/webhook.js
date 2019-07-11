@@ -22,9 +22,12 @@ router.post('/', function(req, res, next) {
     if( tenant == MY_TENANT_ID) { // 기대하는 Tenant 이고 
         // job이 만들어질때 Schedule인지 파악 
         if( type == 'job.created' && req.body['StartInfo']['Source'] == 'Schedule' ) {
-            jobs.add( req.body['EventId'])
+            let job = req.body['Jobs']
+            job.foreach( (elm) => {
+                jobs.add( elm.Id)
+            });
         }
-        if( jobs.has( req.body['EventId']) && (type == 'job.faulted' || type == 'job.completed')) { // Job이 종료한 경우라면 
+        if( jobs.has( req.body['Job']['Id']) && (type == 'job.faulted' || type == 'job.completed')) { // Job이 종료한 경우라면 
             var inputArgs = new Map();
             let procName= req.body['Release']['ProcessKey'];
             if( procName != NOTI_PROC_NAME) {
