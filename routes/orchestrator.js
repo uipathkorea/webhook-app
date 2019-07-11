@@ -1,5 +1,27 @@
 "use strict";
 var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
+const crypto = require('crypto');
+
+class AuthToken {
+	constructor( reToken) {
+		this.refreshToken = reToken;
+	}
+	refreshToken() {
+		var xhttp = new XMLHttpRequest();
+		xhttp.withCredentials = true;
+
+		// Compose request
+		xhttp.open('POST', 'https://account.uipath.com/oauth/token', false);
+		xhttp.setRequestHeader('Content-Type', 'application/json');
+		xhttp.send( { grant_type: 'refresh_token',
+						client_id: '5v7PmPJL6FOGu6RB8I1Y4adLBhIwovQN',
+					refresh_token: this.refreshToken });
+		if ( xhttp.status == 200) {
+			let resp = JSON.parse( xhttp.responseText)
+			return resp['access_token']
+		}
+	}
+}
 
 class Orchestrator {
   
