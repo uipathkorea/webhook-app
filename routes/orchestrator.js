@@ -2,6 +2,7 @@
 var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 const crypto = require('crypto');
 
+/*
 class AuthToken {
 	constructor( reToken) {
 		this.refreshToken = reToken;
@@ -22,6 +23,7 @@ class AuthToken {
 		}
 	}
 }
+*/
 
 class Orchestrator {
   
@@ -143,7 +145,7 @@ class Orchestrator {
 	}
 
 	startJob( payload) {
-		console.log( JSON.stringify(payload));
+		//console.log( JSON.stringify(payload));
 		let job = this.requestSync( {
 			type: 'POST',
 			extension: 'odata/Jobs/UiPath.Server.Configuration.OData.StartJobs',

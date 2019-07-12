@@ -28,24 +28,25 @@ router.post('/', function(req, res, next) {
             });
         }
         //console.log(jobs);
-        if( jobs.has( req.body['Job']['Id'])  &&  (type == 'job.faulted' || type == 'job.completed')) { // Job이 종료한 경우라면 
-            var inputArgs = {};
-            let procName= req.body['Job']['Release']['ProcessKey'];
-            if( procName != NOTI_PROC_NAME) {
-                let relKey = orch.getReleaseKey( NOTI_PROC_NAME); //작업 결과를 알려주는 프로세스 선택 
-                let robotId = orch.getRobotId( NOTI_ROBOT_NAME); // 작업 결과를 알려주는 프로세스를 선택할 로봇 
-                inputArgs['ContactEmail'] = req.body['Job']['OutputArguments']['ContactEmail'];
-                inputArgs['ContactPhone'] = req.body['Job']['OutputArguments']['ContactPhone'];
-                inputArgs['ProcessName'] =  procName;
-                var inargs = JSON.stringify( inputArgs);
-                let newjob = orch.startJob( { startInfo: {
-                                        ReleaseKey : `${relKey}`,
-                                        Strategy: 'Specific',
-                                        RobotIds: [ parseInt(`${robotId}`)],
-                                        Source: 'Manual',
-                                        InputArguments: `${inargs}`
-                                    } });
-                console.log( newjob)
+        if (type == 'job.faulted' || type == 'job.completed') { // Job이 종료한 경우라면 
+            if( jobs.has( req.body['Job']['Id'])) {
+                var inputArgs = {};
+                let procName= req.body['Job']['Release']['ProcessKey'];
+                if( procName != NOTI_PROC_NAME) {
+                    let relKey = orch.getReleaseKey( NOTI_PROC_NAME); //작업 결과를 알려주는 프로세스 선택 
+                    let robotId = orch.getRobotId( NOTI_ROBOT_NAME); // 작업 결과를 알려주는 프로세스를 선택할 로봇 
+                    inputArgs['ContactEmail'] = req.body['Job']['OutputArguments']['ContactEmail'];
+                    inputArgs['ContactPhone'] = req.body['Job']['OutputArguments']['ContactPhone'];
+                    inputArgs['ProcessName'] =  procName;
+                    let newjob = orch.startJob( { startInfo: {
+                                            ReleaseKey : `${relKey}`,
+                                            Strategy: 'Specific',
+                                            RobotIds: [ parseInt(`${robotId}`)],
+                                            Source: 'Manual',
+                                            InputArguments: `${JSON.stringifyg(inputArgs)}`
+                                        } });
+                    //console.log( newjob)
+                }
             }
             jobs.delete( req.body['Job']['Id']);
         }
