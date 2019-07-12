@@ -16,7 +16,6 @@ var orch = new Orchestrator('koreatogether', 'admin', 'password', 'https://platf
 특정 Job이 schedule에 의해서 실행된 Job인 경우 해당 Job이 완료된 경우 담당자에게 알려주기 
 */
 router.post('/', function(req, res, next) {
-    res.sendStatus(202);
     let type = req.body['Type']
     let tenant = req.body['TenantId']
     if( tenant == MY_TENANT_ID) { // 기대하는 Tenant 이고 
@@ -48,6 +47,8 @@ router.post('/', function(req, res, next) {
             jobs.delete( req.body['EventId']);
         }
     }
+
+    res.sendStatus(202);
 });
 
 
