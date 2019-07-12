@@ -13,7 +13,7 @@ var jobs = new Set();
 var orch = new Orchestrator('koreatogether', 'admin', 'password', 'https://platform.uipath.com/koreatogether/koreatogether/')
 
 /*
-특정 Job이 schedule에 의해서 실행된 Job인 경우 해당 Job이 완료된 경우 담당자에게 알려주기 
+  특정 Job이 schedule에 의해서 실행된 Job인 경우 해당 Job이 완료된 경우 담당자에게 알려주기 
 */
 router.post('/', function(req, res, next) {
     //console.log( req.body);
@@ -38,6 +38,7 @@ router.post('/', function(req, res, next) {
                     inputArgs['ContactEmail'] = req.body['Job']['OutputArguments']['ContactEmail'];
                     inputArgs['ContactPhone'] = req.body['Job']['OutputArguments']['ContactPhone'];
                     inputArgs['ProcessName'] =  procName;
+                    inputArgs['State'] = req.body['Job']['State'];
                     let newjob = orch.startJob( { startInfo: {
                                             ReleaseKey : `${relKey}`,
                                             Strategy: 'Specific',
