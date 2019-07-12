@@ -16,6 +16,7 @@ var orch = new Orchestrator('koreatogether', 'admin', 'password', 'https://platf
 특정 Job이 schedule에 의해서 실행된 Job인 경우 해당 Job이 완료된 경우 담당자에게 알려주기 
 */
 router.post('/', function(req, res, next) {
+    console.log( req.body);
     let type = req.body['Type']
     let tenant = req.body['TenantId']
     if( tenant == MY_TENANT_ID) { // 기대하는 Tenant 이고 
@@ -26,9 +27,10 @@ router.post('/', function(req, res, next) {
                 jobs.add( elm.Id)
             });
         }
+        console.log(jobs);
         if( jobs.has( req.body['Job']['Id']) && (type == 'job.faulted' || type == 'job.completed')) { // Job이 종료한 경우라면 
             var inputArgs = new Map();
-            let procName= req.body['Release']['ProcessKey'];
+            let procName= req.body['Job']['Release']['ProcessKey'];
             if( procName != NOTI_PROC_NAME) {
                 let relKey = orch.getReleaseKey( NOTI_PROC_NAME); //작업 결과를 알려주는 프로세스 선택 
                 let robotId = orch.getRobotId( NOTI_ROBOT_NAME); // 작업 결과를 알려주는 프로세스를 선택할 로봇 
@@ -44,7 +46,7 @@ router.post('/', function(req, res, next) {
                                     } });
                 console.log( job)
             }
-            jobs.delete( req.body['EventId']);
+            jobs.delete( req.body['Job']['Id']);
         }
     }
 
