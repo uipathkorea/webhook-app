@@ -43,7 +43,7 @@ router.post('/', function(req, res, next) {
                                             Strategy: 'Specific',
                                             RobotIds: [ parseInt(`${robotId}`)],
                                             Source: 'Manual',
-                                            InputArguments: `${JSON.stringifyg(inputArgs)}`
+                                            InputArguments: `${JSON.stringify(inputArgs)}`
                                         } });
                     //console.log( newjob)
                 }
