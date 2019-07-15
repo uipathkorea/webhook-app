@@ -16,7 +16,6 @@ Orchestrator Webhook Example
 ```
 var port = normalizePort(process.env.PORT || '2024');
 app.set('port', port);
-
 ```
 5. 사용하자고 하는 webhook code를 선택합니다. (app.js) 
 routes/webhook.js는 특정 Queue에 데이터가 들어오면 이 Queue를 처리하는 프로세스를 실행시키는 예제이며, 
@@ -33,6 +32,6 @@ routes/webhook_noti.js 는 Schedule에 의해서 실행된 프로세스가 종�
 ```
 
 7. Orchestrator 에서 webhook을 등록합니다. 이때 URL은 아래와 같은 패턴을 가져야 합니다. 
-http://{webhoo_ip_address_or_domain_name}:{service_port}/webhook 
+http://{ip_address_or_domain_name}:{service_port}/webhook 
 
 8. 환경에 맞게 webhook_noti.js 및 webhook.js를 수정하여 사용합니다. 
